@@ -150,25 +150,24 @@ def draw_transition_probabilities(G, ax):
 
 def draw_graph(subplot, G, abstractions_df):
     
-    # fig, ax = matplotlib.pyplot.subplots()
+    fig, ax = matplotlib.pyplot.subplots(figsize=(16, 10))
 
     # Draw nodes with markov properties
-    # layer1, layer2 = draw_nodes(G, abstractions_df,ax)
-    layer1, layer2 = draw_nodes(G, abstractions_df,subplot)
+    layer1, layer2 = draw_nodes(G, abstractions_df, ax)
 
     # Draw subset relationships
-    # layer3 = draw_subset_relationships(G,ax)
-    layer3 = draw_subset_relationships(G,subplot)
+    layer3 = draw_subset_relationships(G, ax)
 
     # Draw transitions with probability
-    # layer4 = draw_transition_probabilities(G,ax)
-    layer4 = draw_transition_probabilities(G,subplot)
-    
-    # Display polt with matplolib.pyplot
-    # ax.tick_params(left=True, labelleft=True)
-    # ax.set_ylabel('Number of species')
-    subplot.tick_params(left=True, labelleft=True)
-    subplot.set_ylabel('Number of species')
+    layer4 = draw_transition_probabilities(G, ax)
+
+    ax.tick_params(left=True, labelleft=True)
+    ax.set_ylabel('Number of species')
     matplotlib.pyplot.legend((layer1,layer2,layer3, layer4),("Reachability","Maintainability","Subset relationship","Transition (width~probability)"))
-    # matplotlib.pyplot.show()
-    # return fig, ax
+    
+    return (fig, ax)
+
+def plot_markov(abstractions_df, transitions_df):
+    G = create_graph(abstractions_df, transitions_df)
+    fig, axes = draw_graph(G, abstractions_df)
+    return (fig, axes)
