@@ -196,3 +196,56 @@ def check_3(n, change_function):
 
 def check_metric(n, change_function):
     return (check_1(n, change_function) and check_2(n, change_function) and check_3(n, change_function))
+
+def n_elements_quick_sort(elements):
+    '''
+    In:  elements (list)
+    Out: elements sorted into lists by number of elements
+    '''
+
+    bins = [[] for i in range(len(elements[0])+1)]
+    for a in elements:
+        bins[n_elements(a)].append(a)
+    return bins
+
+def unique(abstractions):
+    '''
+    In:  abstractions (list), list of abstractions
+    Out: list of unique abstractions
+    '''
+    abstractions = [str(a) for a in abstractions]           # Converting abstractions to a string representation for elimination of duplicates
+    abstractions = list(set(abstractions))                  # Filters all duplicates
+    abstractions = [from_string(a) for a in abstractions]   # Converting abstractions back to binary array representation to count number of elements
+
+    return abstractions
+
+def frequencies(elements):
+    '''
+    In:  elements (list)
+    Out: List of elements occuring with a frequency of min_freq or higher
+    '''
+    
+    l = len(elements)
+    unique_elements = unique(copy.copy(elements))   # Change this line to use the function for things other than arrays
+    unique_elements = list(itertools.chain(*n_elements_quick_sort(unique_elements)))
+    unique_elements = [[e, 0] for e in unique_elements]
+    all_elements    = n_elements_quick_sort(elements)
+
+    for ue in unique_elements:
+        for ae in all_elements[n_elements(ue[0])]:
+            if ue[0] == ae:
+                ue[1] += 1
+                
+    return unique_elements
+
+def frequency_filter(elements, min_freq=2):
+    '''
+    In:  elements (list)
+         min_freq (int),  frequency threshold     
+    Out: List of elements occuring with a frequency of min_freq or higher
+    '''
+
+    keep        = [f[0] for f in frequencies(elements) if f[1]>=min_freq]
+    filtered    = [e for e in elements if e in keep]
+
+    return filtered
