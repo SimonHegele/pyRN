@@ -80,7 +80,7 @@ def transition_matrix_from_dataframes(abstractions_df, transitions_df):
         start = abstractions_df.loc[i,'abstraction']
         transitions_from_start = transitions_df.loc[transitions_df['initial_state']==start]
         for x in transitions_from_start.index.tolist():
-            end = transitions_from_start.loc[x, 'a_2']
+            end = transitions_from_start.loc[x, 'convergent_state']
             # print(end)
             j = abstractions_df.index[abstractions_df['abstraction']==end][0]
             p = transitions_df.loc[(transitions_df['initial_state']==start) & (transitions_df['convergent_state']==end), 'probability'].tolist()[0]
